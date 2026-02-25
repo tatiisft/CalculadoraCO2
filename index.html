@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Emissões por Trajeto</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Calculadora de Emissões  de CO2 por Trajeto</h1>
+        <p>Descubra o impacto ambiental da sua jornada e contribua para um futuro mais sustentável.</p>
+    </header>
+
+    <main>
+        <section id="formulario">
+            <h2>Informações do Trajeto</h2>
+            <form id="formCalculadora">
+                <div class="form-group">
+                    <label for="pontoPartida">Ponto de Partida</label>
+                    <select id="pontoPartida" name="pontoPartida" required>
+                        <option value="">-- Selecione uma cidade --</option>
+                        <option value="Recife">Recife</option>
+                        <option value="Salvador">Salvador</option>
+                        <option value="Maceió">Maceió</option>
+                        <option value="Fortaleza">Fortaleza</option>
+                        <option value="Natal">Natal</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="pontoDestino">Ponto de Destino</label>
+                    <select id="pontoDestino" name="pontoDestino" required>
+                        <option value="">-- Selecione uma cidade --</option>
+                        <option value="Recife">Recife</option>
+                        <option value="Salvador">Salvador</option>
+                        <option value="Maceió">Maceió</option>
+                        <option value="Fortaleza">Fortaleza</option>
+                        <option value="Natal">Natal</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="distancia">Distância (km)</label>
+                    <input type="number" id="distancia" name="distancia" placeholder="Preenchido automaticamente" min="0" step="0.01" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Meio de Transporte</label>
+                    <div class="transporte-icons">
+                        <input type="hidden" id="transporte" name="transporte" required>
+                        
+                        <button type="button" class="icon-transporte" data-value="moto" data-icon="🏍️" data-label="Moto">
+                            <span class="icon">🏍️</span>
+                            <span class="label">Moto</span>
+                        </button>
+                        
+                        <button type="button" class="icon-transporte" data-value="carro" data-icon="🚗" data-label="Carro">
+                            <span class="icon">🚗</span>
+                            <span class="label">Carro</span>
+                        </button>
+                        
+                        <button type="button" class="icon-transporte" data-value="onibus" data-icon="🚌" data-label="Ônibus">
+                            <span class="icon">🚌</span>
+                            <span class="label">Ônibus</span>
+                        </button>
+                        
+                        <button type="button" class="icon-transporte" data-value="aviao" data-icon="✈️" data-label="Avião">
+                            <span class="icon">✈️</span>
+                            <span class="label">Avião</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-calcular">Calcular Impacto</button>
+            </form>
+        </section>
+
+        <section id="resultado">
+            <h2>Resultado da Análise</h2>
+            <div id="resultado-conteudo" class="resultado-conteudo">
+                <p class="mensagem-padrao">Preencha o formulário e clique em "Calcular Impacto" para ver os resultados.</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="graficoComparativo"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Calculadora de Emissões por Trajeto. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

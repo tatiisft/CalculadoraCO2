@@ -1,0 +1,604 @@
+/* ===========================
+   Calculadora de Emissões por Trajeto
+   Design: Dashboard Moderno
+   =========================== */
+
+/* Variáveis de Cores */
+:root {
+    --verde-floresta: #2d5a27;
+    --branco-neve: #f8f9fa;
+    --cinza-gelo: #e8eef0;
+    --cinza-escuro: #5a5a5a;
+    --branco-puro: #ffffff;
+    --verde-claro: #4a7c3f;
+    --verde-muito-claro: #e8f3e6;
+    --sombra: 0 2px 8px rgba(45, 90, 39, 0.1);
+    --sombra-hover: 0 4px 16px rgba(45, 90, 39, 0.15);
+    --transicao: all 0.3s ease;
+}
+
+/* Reset e Estilos Globais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--branco-neve) 0%, var(--cinza-gelo) 100%);
+    color: var(--cinza-escuro);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===========================
+   HEADER
+   =========================== */
+header {
+    background: linear-gradient(135deg, var(--verde-floresta) 0%, var(--verde-claro) 100%);
+    color: var(--branco-neve);
+    padding: 3rem 2rem;
+    box-shadow: var(--sombra-hover);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+header p {
+    font-size: 1.1rem;
+    font-weight: 300;
+    opacity: 0.95;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ===========================
+   MAIN
+   =========================== */
+main {
+    flex: 1;
+    padding: 0 2rem 2rem;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* ===========================
+   FORMULÁRIO
+   =========================== */
+#formulario {
+    background: var(--branco-puro);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--sombra);
+    margin-bottom: 2rem;
+    animation: slideDown 0.5s ease;
+}
+
+#formulario h2 {
+    color: var(--verde-floresta);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#formulario h2::before {
+    content: "📋";
+    font-size: 1.5rem;
+}
+
+/* Form com Grid Responsivo */
+#formCalculadora {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+/* Em tablets e desktop: 2 colunas */
+@media (min-width: 768px) {
+    #formCalculadora {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Botão na largura total em mobile, largura natural em desktop */
+@media (min-width: 768px) {
+    #formCalculadora .btn-calcular {
+        grid-column: 1 / -1;
+        width: fit-content;
+    }
+}
+
+/* Form Group */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Transporte ocupa a largura total */
+.form-group:has(.transporte-icons) {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    color: var(--verde-floresta);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-group label::before {
+    content: attr(data-icon);
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--verde-muito-claro);
+    border-radius: 50%;
+    font-size: 0.8rem;
+    color: var(--verde-floresta);
+}
+
+/* Ícones Genéricos para Labels */
+[for="pontoPartida"]::before {
+    content: "📍";
+    background: transparent;
+    width: auto;
+    height: auto;
+}
+
+[for="pontoDestino"]::before {
+    content: "🎯";
+    background: transparent;
+    width: auto;
+    height: auto;
+}
+
+[for="distancia"]::before {
+    content: "📏";
+    background: transparent;
+    width: auto;
+    height: auto;
+}
+
+[for="transporte"]::before {
+    content: "🚗";
+    background: transparent;
+    width: auto;
+    height: auto;
+}
+
+/* Inputs e Selects */
+input[type="text"],
+input[type="number"],
+select {
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--cinza-gelo);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: var(--branco-puro);
+    color: var(--cinza-escuro);
+    transition: var(--transicao);
+    appearance: none; /* Remove o estilo padrão do select */
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    outline: none;
+    border-color: var(--verde-floresta);
+    background-color: var(--verde-muito-claro);
+    box-shadow: 0 0 0 3px rgba(45, 90, 39, 0.1);
+}
+
+input[type="text"]::placeholder,
+input[type="number"]::placeholder {
+    color: #999;
+}
+
+/* Input readonly (distância preenchida automaticamente) */
+input[type="number"]:read-only {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    color: var(--verde-floresta);
+    font-weight: 600;
+}
+
+input[type="number"]:read-only:focus {
+    background-color: #f5f5f5;
+    border-color: var(--cinza-gelo);
+    box-shadow: none;
+}
+
+/* Select Custom */
+select {
+    padding-right: 2.5rem;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232d5a27' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 1.2em 1.2em;
+    padding-right: 2.5rem;
+}
+
+/* Transporte Icons Container */
+.transporte-icons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .transporte-icons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .transporte-icons {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+    }
+}
+
+/* Botão de Transporte */
+.icon-transporte {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.2rem 1rem;
+    border: 2px solid var(--cinza-gelo);
+    border-radius: 12px;
+    background: var(--branco-puro);
+    cursor: pointer;
+    transition: var(--transicao);
+    font-family: inherit;
+    color: var(--cinza-escuro);
+}
+
+.icon-transporte:hover {
+    border-color: var(--verde-claro);
+    background: var(--verde-muito-claro);
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.15);
+}
+
+/* Estado Ativo */
+.icon-transporte.active {
+    border-color: var(--verde-floresta);
+    background: linear-gradient(135deg, var(--verde-floresta) 0%, var(--verde-claro) 100%);
+    color: var(--branco-neve);
+    box-shadow: 0 6px 16px rgba(45, 90, 39, 0.3);
+}
+
+.icon-transporte.active .label {
+    color: var(--branco-neve);
+    font-weight: 600;
+}
+
+/* Ícone dentro do botão */
+.icon-transporte .icon {
+    font-size: 2rem;
+    display: block;
+}
+
+.icon-transporte .label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    color: var(--cinza-escuro);
+    transition: var(--transicao);
+}
+
+/* Botão Calcular */
+.btn-calcular {
+    background: linear-gradient(135deg, var(--verde-floresta) 0%, var(--verde-claro) 100%);
+    color: var(--branco-neve);
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transicao);
+    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .btn-calcular {
+        width: auto;
+    }
+}
+
+.btn-calcular:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(45, 90, 39, 0.3);
+}
+
+.btn-calcular:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(45, 90, 39, 0.2);
+}
+
+/* ===========================
+   SEÇÃO DE RESULTADOS
+   =========================== */
+#resultado {
+    background: var(--branco-puro);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--sombra);
+    animation: slideUp 0.5s ease;
+}
+
+#resultado h2 {
+    color: var(--verde-floresta);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#resultado h2::before {
+    content: "📊";
+    font-size: 1.5rem;
+}
+
+.resultado-conteudo {
+    min-height: 150px;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+.mensagem-padrao {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.05rem;
+}
+
+/* Resumo do Trajeto */
+.resumo-trajeto {
+    background: linear-gradient(135deg, var(--verde-muito-claro) 0%, rgba(74, 124, 63, 0.05) 100%);
+    border-left: 5px solid var(--verde-floresta);
+    padding: 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.resumo-trajeto p {
+    margin: 0.5rem 0;
+    color: var(--cinza-escuro);
+    font-size: 1rem;
+}
+
+.resumo-trajeto strong {
+    color: var(--verde-floresta);
+    font-weight: 600;
+}
+
+/* Cards de Resultado */
+.resultado-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+@media (min-width: 768px) {
+    .resultado-cards {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.card-resultado {
+    background: linear-gradient(135deg, var(--verde-muito-claro) 0%, rgba(74, 124, 63, 0.05) 100%);
+    border-left: 5px solid var(--verde-floresta);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(45, 90, 39, 0.08);
+    transition: var(--transicao);
+    animation: slideInUp 0.6s ease-out;
+}
+
+.card-resultado:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(45, 90, 39, 0.15);
+}
+
+.card-resultado h3 {
+    color: var(--verde-floresta);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-resultado .valor {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--verde-floresta);
+    margin-bottom: 0.3rem;
+}
+
+.card-resultado .unidade {
+    font-size: 0.85rem;
+    color: #888;
+    font-weight: 500;
+}
+
+/* Ícones dos Cards */
+.card-resultado:nth-child(1) h3::before {
+    content: "💨";
+    font-size: 1.2rem;
+}
+
+.card-resultado:nth-child(2) h3::before {
+    content: "🌳";
+    font-size: 1.2rem;
+}
+
+/* Mensagem de Compensação */
+.mensagem-compensacao {
+    background: linear-gradient(135deg, rgba(74, 124, 63, 0.1) 0%, rgba(45, 90, 39, 0.05) 100%);
+    border: 2px solid var(--verde-claro);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    animation: slideInUp 0.7s ease-out;
+}
+
+.mensagem-compensacao p {
+    color: var(--verde-floresta);
+    font-size: 1.05rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.mensagem-compensacao strong {
+    color: var(--verde-floresta);
+    font-weight: 700;
+    font-size: 1.15rem;
+}
+
+/* ===========================
+   GRÁFICO COMPARATIVO
+   =========================== */
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(248, 249, 250, 0.8) 0%, rgba(232, 238, 240, 0.5) 100%);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(45, 90, 39, 0.08);
+    animation: slideInUp 0.7s ease-out;
+}
+
+.chart-container canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ===========================
+   FOOTER
+   =========================== */
+footer {
+    background: var(--verde-floresta);
+    color: var(--branco-neve);
+    text-align: center;
+    padding: 2rem;
+    margin-top: auto;
+    font-size: 0.9rem;
+    box-shadow: 0 -2px 8px rgba(45, 90, 39, 0.1);
+}
+
+/* ===========================
+   ANIMAÇÕES
+   =========================== */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ===========================
+   RESPONSIVIDADE
+   =========================== */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    header p {
+        font-size: 0.95rem;
+    }
+
+    main {
+        padding: 0 1rem 1.5rem;
+    }
+
+    #formulario,
+    #resultado {
+        padding: 1.5rem;
+    }
+
+    #formulario h2,
+    #resultado h2 {
+        font-size: 1.4rem;
+    }
+
+    .card-resultado .valor {
+        font-size: 1.5rem;
+    }
+}
