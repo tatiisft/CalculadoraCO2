@@ -20,6 +20,11 @@ Este projeto é um **desafio prático do bootcamp da DIO** focado em demonstrar 
 
 Demonstrar os benefícios do GitHub Copilot na criação de um projeto completo, desde a estrutura HTML5 semântica até a integração de gráficos dinâmicos com Chart.js, usando **prompts bem estruturados** como norte para autonomia e eficiência no desenvolvimento.
 
+### 🚀 Como Acessar o Projeto
+
+Você pode utilizar a calculadora agora mesmo, diretamente pelo seu navegador, sem a necessidade de baixar arquivos ou instalar nada em seu computador.
+👉 **[Acesse a Calculadora Online Aqui](https://tatiisft.github.io/CalculadoraCO2/)**
+
 ---
 
 ## ⚙️ Funcionalidades
@@ -240,3 +245,4 @@ Este projeto é fornecido como parte do bootcamp da DIO e pode ser utilizado liv
 **GitHub Copilot transformando a forma como desenvolvemos!** 🚀
 
 </div>
+
